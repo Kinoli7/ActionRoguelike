@@ -7,6 +7,8 @@
 #include "SGameplayInterface.h"
 #include "SItemChest.generated.h"
 
+class UStaticMeshComponent;
+
 UCLASS()
 class ACTIONROGUELIKE_API ASItemChest : public AActor, public ISGameplayInterface
 {
@@ -27,7 +29,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* BaseMesh;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* LidMesh;
 
 	// Called when the game starts or when spawned
