@@ -7,6 +7,8 @@
 #include "DrawDebugHelpers.h"
 #include <GameFramework/CharacterMovementComponent.h>
 #include "SInteractionComponent.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/PlayerController.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -110,7 +112,33 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 {
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
+	
+	FHitResult OutHit;
+	FVector EyeLocation;
+	FRotator EyeRotation;
+	FTransform SpawnTM;
+	CameraComp->GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(EyeLocation, EyeRotation);
+	FVector End = EyeLocation + (EyeRotation.Vector() * 10000);
+	//ECollisionChannel TraceChannel;
+	bool bRayCollided = GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End, ObjectQueryParams);
+	if (bRayCollided)
+	{
+		DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Red, false, 2.0f, 0, 2.0f);
+		
+		FVector HitLocation = OutHit.ImpactPoint;
+		FRotator MissileRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, HitLocation);
+
+		DrawDebugSphere(GetWorld(), HitLocation, 10.0f, 16, FColor::Red, false, 2);
+		
+		SpawnTM = FTransform(MissileRotation, HandLocation);
+	}
+	else
+	{
+		SpawnTM = FTransform(GetControlRotation(), HandLocation);
+	}
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
