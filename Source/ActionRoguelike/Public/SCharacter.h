@@ -22,8 +22,14 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AttackAnim;
+	TSubclassOf<AActor> DashProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnimMagicProjectile;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UAnimMontage* AttackAnimDashProjectile;
+	
 	FTimerHandle TimerHandle_PrimaryAttack;
 
 public:
@@ -51,6 +57,9 @@ protected:
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();
 
+	void DashProjectile();
+	void DashProjectile_TimeElapsed();
+	
 	void PrimaryInteract();
 
 public:	

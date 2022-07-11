@@ -3,6 +3,8 @@
 
 #include "SProjectile.h"
 
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values
 ASProjectile::ASProjectile()
 {
@@ -26,6 +28,22 @@ ASProjectile::ASProjectile()
 void ASProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	
+}
+
+void ASProjectile::OnActorHit(AActor OnActorHit, AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit )
+{
+	Explode();
+}
+
+void ASProjectile::Explode_Implementation()
+{
+	if(ensure(!IsPendingKill()))
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
+
+		Destroy();
+	}
 	
 }
 
