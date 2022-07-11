@@ -9,6 +9,7 @@
 #include "SInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h"
+#include "SAttributeComponent.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -23,6 +24,8 @@ ASCharacter::ASCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
 
+	AttributeComp = CreateDefaultSubobject<USAttributeComponent>("AttributeComp");
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bApplyGravityWhileJumping = true;
 
