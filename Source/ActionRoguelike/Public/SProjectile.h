@@ -34,6 +34,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UParticleSystemComponent* EffectComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* MagicProjectileLoopAudio;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* MagicProjectileExplosionAudio;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

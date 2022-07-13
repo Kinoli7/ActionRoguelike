@@ -3,6 +3,7 @@
 
 #include "SProjectile.h"
 
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -25,6 +26,11 @@ ASProjectile::ASProjectile()
 
 	SphereComp->OnComponentHit.AddDynamic(this, &ASProjectile::OnActorHit);
 
+	MagicProjectileLoopAudio = CreateDefaultSubobject<UAudioComponent>("MagicProjectileLoopAudio");
+	MagicProjectileLoopAudio->SetupAttachment(SphereComp);
+	
+	MagicProjectileExplosionAudio = CreateDefaultSubobject<UAudioComponent>("MagicProjectileExplosionAudio");
+	MagicProjectileExplosionAudio->SetupAttachment(SphereComp);
 }
 
 // Called when the game starts or when spawned
@@ -43,8 +49,9 @@ void ASProjectile::Explode_Implementation()
 {
 	if(ensure(!IsPendingKill()))
 	{
+		MagicProjectileLoopAudio->Stop();
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());
-
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), MagicProjectileExplosionAudio->Sound, GetActorLocation());
 		Destroy();
 	}
 	
