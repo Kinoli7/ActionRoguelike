@@ -22,6 +22,9 @@ ASProjectile::ASProjectile()
 	MovementComp->InitialSpeed = 1000.0f;
 	MovementComp->bRotationFollowsVelocity = true;
 	MovementComp->bInitialVelocityInLocalSpace = true;
+
+	SphereComp->OnComponentHit.AddDynamic(this, &ASProjectile::OnActorHit);
+
 }
 
 // Called when the game starts or when spawned
@@ -31,7 +34,7 @@ void ASProjectile::BeginPlay()
 	
 }
 
-void ASProjectile::OnActorHit(AActor OnActorHit, AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit )
+void ASProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Explode();
 }
