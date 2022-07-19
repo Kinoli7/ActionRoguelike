@@ -3,31 +3,31 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SGameplayInterface.h"
-#include "GameFramework/Actor.h"
 #include "SAttributeComponent.h"
-#include "SItemPotion.generated.h"
+#include "SPowerupActor.h"
+#include "SPowerup_HealthPotion.generated.h"
 
 // DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FPotionHeal, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
 
 UCLASS()
-class ACTIONROGUELIKE_API ASItemPotion : public AActor, public ISGameplayInterface
+class ACTIONROGUELIKE_API ASPowerup_HealthPotion : public ASPowerupActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASItemPotion();
+	ASPowerup_HealthPotion();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* MeshComp;
 
 	UPROPERTY(EditDefaultsOnly)
 	float PotionCooldownTimerSeconds;
+
+	UPROPERTY(EditDefaultsOnly)
+	float PotionHealthValue;
 	
 	UPROPERTY()
 	FTimerHandle TimerHandle_PotionCooldown;
@@ -36,8 +36,5 @@ protected:
 
 	
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	void Interact_Implementation(APawn* InstigatorPawn) override;
 };
