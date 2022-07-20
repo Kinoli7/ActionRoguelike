@@ -11,7 +11,7 @@ bool USAttributeComponent::IsAlive() const
 // Sets default values for this component's properties
 USAttributeComponent::USAttributeComponent()
 {
-	Health = 100;
+	HealthMax = Health = 100;
 }
 
 bool USAttributeComponent::IsFullHealth() const
