@@ -17,6 +17,12 @@ public:
 	// Sets default values for this component's properties
 	USAttributeComponent();
 
+	UFUNCTION(BlueprintCallable, Category="Attribute")
+	static USAttributeComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category="Attribute", meta=(DisplayName="IsAlive"))
+	static bool IsActorAlive(AActor* Actor);
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true), Category="Attributes")
 	float Health;
@@ -36,5 +42,5 @@ public:
 	float GetHealthMax() const;
 	
 	UFUNCTION(BlueprintCallable, Category="Attributes")
-	bool ApplyHealthChange(float Delta);
+	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
 };
