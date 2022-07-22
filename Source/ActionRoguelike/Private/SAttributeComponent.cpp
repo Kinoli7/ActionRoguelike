@@ -67,3 +67,8 @@ bool USAttributeComponent::IsActorAlive(AActor* Actor)
 
 	return false;
 }
+
+float USAttributeComponent::GetActualHealth()
+{
+	return Health;
+}

@@ -46,4 +46,7 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Attributes")
 	bool ApplyHealthChange(AActor* InstigatorActor, float Delta);
+
+	UFUNCTION()
+	float GetActualHealth();
 };

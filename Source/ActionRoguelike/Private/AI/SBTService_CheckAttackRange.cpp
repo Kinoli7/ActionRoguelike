@@ -2,9 +2,6 @@
 
 
 #include "AI/SBTService_CheckAttackRange.h"
-
-#include <Actor.h>
-
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
