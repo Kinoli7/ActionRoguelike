@@ -47,7 +47,7 @@ void ASProjectile::OnActorHit(UPrimitiveComponent* HitComp, AActor* OtherActor, 
 
 void ASProjectile::Explode_Implementation()
 {
-	if(ensure(!IsPendingKill()))
+	if(ensure(IsValid(this)))
 	{
 		MagicProjectileLoopAudio->Stop();
 		UGameplayStatics::SpawnEmitterAtLocation(this, ImpactVFX, GetActorLocation(), GetActorRotation());

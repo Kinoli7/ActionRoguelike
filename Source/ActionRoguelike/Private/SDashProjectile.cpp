@@ -24,7 +24,7 @@ void ASDashProjectile::Explode_Implementation()
 {
 	//Super::Explode_Implementation();
 	
-	if(ensure(!IsPendingKill()))
+	if(ensure(!IsValid(this)))
 	{
 		GetWorldTimerManager().ClearTimer(TimerHandle_DelayedDetonate);
 		// Exploding animation
