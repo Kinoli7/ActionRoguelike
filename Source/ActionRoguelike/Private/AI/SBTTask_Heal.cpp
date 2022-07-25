@@ -26,7 +26,7 @@ EBTNodeResult::Type USBTTask_Heal::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 		USAttributeComponent* AttributeComp = MyPawn->FindComponentByClass<USAttributeComponent>();
 		if (AttributeComp->GetActualHealth() <= 10.0f)
 		{
-			AttributeComp->ApplyHealthChange(MyPawn, 50.0f);
+			AttributeComp->ApplyHealthChange(MyPawn, 80.0f);
 			return EBTNodeResult::Succeeded;
 		}
 		else

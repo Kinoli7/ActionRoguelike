@@ -23,12 +23,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Attribute", meta=(DisplayName="IsAlive"))
 	static bool IsActorAlive(AActor* Actor);
 
+	virtual void BeginPlay() override;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true), Category="Attributes")
 	float Health;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Attributes")
-	float HealthMax;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	float HealthMax = 1.0f;
 public:
 
 	UFUNCTION(BlueprintCallable)
