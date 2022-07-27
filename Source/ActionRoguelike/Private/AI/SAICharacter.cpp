@@ -7,6 +7,8 @@
 #include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
 #include "SAttributeComponent.h"
+#include "SGameModeBase.h"
+#include "SPlayerState.h"
 #include "SWorldUserWidget.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
@@ -74,6 +76,8 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			GetCharacterMovement()->DisableMovement();
+
+			GetGameInstance()->GetPrimaryPlayerController()->GetPlayerState<ASPlayerState>()->addCredits(1);
 			
 			// Set lifespan
 			SetLifeSpan(10.f);
