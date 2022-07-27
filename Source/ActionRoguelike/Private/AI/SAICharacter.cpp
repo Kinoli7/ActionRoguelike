@@ -14,6 +14,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Perception/PawnSensingComponent.h"
 
 
@@ -77,7 +78,7 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			GetCharacterMovement()->DisableMovement();
 
-			GetGameInstance()->GetPrimaryPlayerController()->GetPlayerState<ASPlayerState>()->AddCredits(1);
+			Cast<ASPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0))->AddCredits(1);
 			
 			// Set lifespan
 			SetLifeSpan(10.f);

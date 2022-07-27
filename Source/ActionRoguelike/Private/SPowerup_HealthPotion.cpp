@@ -4,6 +4,7 @@
 #include "SPowerup_HealthPotion.h"
 
 #include "SPlayerState.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASPowerup_HealthPotion::ASPowerup_HealthPotion()
@@ -29,7 +30,7 @@ void ASPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	}
 
 	USAttributeComponent* AttributeComp = Cast<USAttributeComponent> (InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
-	ASPlayerState* MyPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<ASPlayerState>();
+	ASPlayerState* MyPlayerState = Cast<ASPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0));
 	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth() && MyPlayerState->getNumberOfCredits() >= CreditCost)
 	{
 		if (AttributeComp->ApplyHealthChange(this, PotionHealthValue))
