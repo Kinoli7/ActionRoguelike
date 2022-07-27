@@ -24,4 +24,7 @@ void ASPlayerState::addCredits_Implementation(int Delta)
 {
 	Credits += Delta;
 	UE_LOG(LogTemp, Log, TEXT("Number of coins: %i"), Credits);
+
+	OnCreditsChanged.Broadcast(Credits);
 }
+

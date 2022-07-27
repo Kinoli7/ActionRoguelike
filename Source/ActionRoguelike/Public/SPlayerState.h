@@ -6,7 +6,7 @@
 #include "GameFramework/PlayerState.h"
 #include "SPlayerState.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAddCoin);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCreditsChanged, int, Credits);
 
 /**
  * 
@@ -31,4 +31,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	void addCredits(int Delta);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCreditsChanged OnCreditsChanged;
 };
