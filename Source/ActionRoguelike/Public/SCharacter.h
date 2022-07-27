@@ -12,6 +12,8 @@ class USpringArmComponent;
 class USInteractionComponent;
 class UAnimMontage;
 
+static TAutoConsoleVariable<bool> CVarDebugDrawAttack(TEXT("su.AttackDebugDraw"), false, TEXT("Enable Debug Lines for Attack Component."), ECVF_Cheat);
+
 UCLASS()
 class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {

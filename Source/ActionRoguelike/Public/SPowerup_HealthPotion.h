@@ -32,6 +32,9 @@ protected:
 	UPROPERTY()
 	FTimerHandle TimerHandle_PotionCooldown;
 
+	UPROPERTY(EditAnywhere)
+	int CreditCost;
+	
 	void ResetPotionTimer();
 
 	

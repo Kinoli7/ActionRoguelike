@@ -33,7 +33,7 @@ void ASCoin::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (OtherActor == GetWorld()->GetFirstPlayerController()->GetPawn())
 	{
-		GetWorld()->GetFirstPlayerController()->GetPlayerState<ASPlayerState>()->addCredits(1);
+		GetWorld()->GetFirstPlayerController()->GetPlayerState<ASPlayerState>()->AddCredits(1);
 	}
 }
 

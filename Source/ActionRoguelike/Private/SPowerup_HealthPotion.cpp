@@ -3,6 +3,8 @@
 
 #include "SPowerup_HealthPotion.h"
 
+#include "SPlayerState.h"
+
 // Sets default values
 ASPowerup_HealthPotion::ASPowerup_HealthPotion()
 {
@@ -27,10 +29,12 @@ void ASPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	}
 
 	USAttributeComponent* AttributeComp = Cast<USAttributeComponent> (InstigatorPawn->GetComponentByClass(USAttributeComponent::StaticClass()));
-	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth())
+	ASPlayerState* MyPlayerState = GetWorld()->GetFirstPlayerController()->GetPlayerState<ASPlayerState>();
+	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth() && MyPlayerState->getNumberOfCredits() >= CreditCost)
 	{
 		if (AttributeComp->ApplyHealthChange(this, PotionHealthValue))
 		{
+			MyPlayerState->RemoveCredits(CreditCost); 
 			HideAndCooldownPowerup();
 		}
 	}

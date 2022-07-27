@@ -150,12 +150,19 @@ void ASCharacter::PrimaryAttack_TimeElapsed()
 	bool bRayCollided = GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End, ObjectQueryParams);
 	if (bRayCollided)
 	{
-		DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Red, false, 2.0f, 0, 2.0f);
+		bool bDebugDraw = CVarDebugDrawAttack.GetValueOnGameThread();
+		if (bDebugDraw)
+		{
+			DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Red, false, 2.0f, 0, 2.0f);
+		}
 		
 		FVector HitLocation = OutHit.ImpactPoint;
 		FRotator MissileRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, HitLocation);
 
-		DrawDebugSphere(GetWorld(), HitLocation, 10.0f, 16, FColor::Red, false, 2);
+		if (bDebugDraw)
+		{
+			DrawDebugSphere(GetWorld(), HitLocation, 10.0f, 16, FColor::Red, false, 2);
+		}
 		
 		SpawnTM = FTransform(MissileRotation, HandLocation);
 	}

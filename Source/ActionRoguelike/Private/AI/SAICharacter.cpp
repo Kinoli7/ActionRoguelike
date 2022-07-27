@@ -77,7 +77,7 @@ void ASAICharacter::OnHealthChanged(AActor* InstigatorActor, USAttributeComponen
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			GetCharacterMovement()->DisableMovement();
 
-			GetGameInstance()->GetPrimaryPlayerController()->GetPlayerState<ASPlayerState>()->addCredits(1);
+			GetGameInstance()->GetPrimaryPlayerController()->GetPlayerState<ASPlayerState>()->AddCredits(1);
 			
 			// Set lifespan
 			SetLifeSpan(10.f);

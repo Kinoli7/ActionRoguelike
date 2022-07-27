@@ -30,7 +30,10 @@ public:
 	int getNumberOfCredits();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void addCredits(int Delta);
+	void AddCredits(int Delta);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void RemoveCredits(int Delta);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnCreditsChanged OnCreditsChanged;

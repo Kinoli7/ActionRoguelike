@@ -20,11 +20,17 @@ void ASPlayerState::BeginPlay()
 	Credits = 0;
 }
 
-void ASPlayerState::addCredits_Implementation(int Delta)
+void ASPlayerState::AddCredits_Implementation(int Delta)
 {
 	Credits += Delta;
-	UE_LOG(LogTemp, Log, TEXT("Number of coins: %i"), Credits);
+	
+	OnCreditsChanged.Broadcast(Credits);
+}
 
+void ASPlayerState::RemoveCredits_Implementation(int Delta)
+{
+	Credits -= Delta;
+	
 	OnCreditsChanged.Broadcast(Credits);
 }
 
