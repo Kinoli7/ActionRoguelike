@@ -24,4 +24,12 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* MeshComp;
 
+	UPROPERTY(EditDefaultsOnly)
+	float CoinCooldownTimerSeconds;
+	
+	UPROPERTY()
+	FTimerHandle TimerHandle_CoinCooldown;
+	
+	void ResetCoinTimer();
+
 };
