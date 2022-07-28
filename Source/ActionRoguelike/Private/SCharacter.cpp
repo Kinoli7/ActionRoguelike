@@ -143,77 +143,12 @@ void ASCharacter::SprintStop()
 
 void ASCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(AttackAnimMagicProjectile);
-
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::PrimaryAttack_TimeElapsed, 0.2f);
-
-	// If the character dies
-	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
-}
-
-void ASCharacter::PrimaryAttack_TimeElapsed()
-{
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
-
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldStatic);
-	
-	FHitResult OutHit;
-	FVector EyeLocation;
-	FRotator EyeRotation;
-	FTransform SpawnTM;
-	CameraComp->GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(EyeLocation, EyeRotation);
-	FVector End = EyeLocation + (EyeRotation.Vector() * 10000);
-	//ECollisionChannel TraceChannel;
-	bool bRayCollided = GetWorld()->LineTraceSingleByObjectType(OutHit, EyeLocation, End, ObjectQueryParams);
-	if (bRayCollided)
-	{
-		bool bDebugDraw = CVarDebugDrawAttack.GetValueOnGameThread();
-		if (bDebugDraw)
-		{
-			DrawDebugLine(GetWorld(), EyeLocation, End, FColor::Red, false, 2.0f, 0, 2.0f);
-		}
-		
-		FVector HitLocation = OutHit.ImpactPoint;
-		FRotator MissileRotation = UKismetMathLibrary::FindLookAtRotation(HandLocation, HitLocation);
-
-		if (bDebugDraw)
-		{
-			DrawDebugSphere(GetWorld(), HitLocation, 10.0f, 16, FColor::Red, false, 2);
-		}
-		
-		SpawnTM = FTransform(MissileRotation, HandLocation);
-	}
-	else
-	{
-		SpawnTM = FTransform(GetControlRotation(), HandLocation);
-	}
-
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	MoveIgnoreActorAdd(GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams));
+	ActionComp->StartActionByName(this, "PrimaryAttack");
 }
 
 void ASCharacter::DashProjectile()
 {
-	PlayAnimMontage(AttackAnimDashProjectile);
-
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &ASCharacter::DashProjectile_TimeElapsed, 0.2f);
-}
-
-void ASCharacter::DashProjectile_TimeElapsed()
-{
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_02");
-	
-	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParams.Instigator = this;
-
-	GetWorld()->SpawnActor<AActor>(DashProjectileClass, SpawnTM, SpawnParams);
+	ActionComp->StartActionByName(this, "DashProjectile");
 }
 
 void ASCharacter::PrimaryInteract()

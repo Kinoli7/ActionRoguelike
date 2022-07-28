@@ -29,20 +29,6 @@ public:
 	
 protected:
 
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> ProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> DashProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AttackAnimMagicProjectile;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AttackAnimDashProjectile;
-	
-	FTimerHandle TimerHandle_PrimaryAttack;
-	
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComp;
 
@@ -70,10 +56,8 @@ protected:
 	void SprintStop();
 
 	void PrimaryAttack();
-	void PrimaryAttack_TimeElapsed();
 
 	void DashProjectile();
-	void DashProjectile_TimeElapsed();
 	
 	void PrimaryInteract();
 
