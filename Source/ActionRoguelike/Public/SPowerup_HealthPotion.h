@@ -3,11 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SAttributeComponent.h"
 #include "SPowerupActor.h"
 #include "SPowerup_HealthPotion.generated.h"
-
-// DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FPotionHeal, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
 
 UCLASS()
 class ACTIONROGUELIKE_API ASPowerup_HealthPotion : public ASPowerupActor

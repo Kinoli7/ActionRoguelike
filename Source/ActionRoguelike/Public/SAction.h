@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/NoExportTypes.h"
 #include "SAction.generated.h"
 
+class USActionComponent;
 class UWorld;
 
 /**
@@ -16,6 +18,17 @@ class ACTIONROGUELIKE_API USAction : public UObject
 {
 	GENERATED_BODY()
 
+protected:
+
+	UFUNCTION(BlueprintCallable, Category="Action")
+	USActionComponent* GetOwningComponent() const;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Tags")
+	FGameplayTagContainer GrantsTags;
+
+	UPROPERTY(EditDefaultsOnly, Category="Tags")
+	FGameplayTagContainer BlockedTags;
+	
 public:
 
 	UFUNCTION(BlueprintNativeEvent, Category="Action")

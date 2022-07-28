@@ -3,9 +3,11 @@
 
 #include "SPowerup_HealthPotion.h"
 
+#include "SAttributeComponent.h"
 #include "SPlayerState.h"
 #include "Kismet/GameplayStatics.h"
 
+class USAttributeComponent;
 // Sets default values
 ASPowerup_HealthPotion::ASPowerup_HealthPotion()
 {

@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "SAttributeComponent.h"
 #include "../../../Plugins/Developer/RiderLink/Source/RD/src/rd_core_cpp/src/main/types/Void.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
