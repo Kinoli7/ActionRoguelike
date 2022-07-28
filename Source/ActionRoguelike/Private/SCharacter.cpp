@@ -94,6 +94,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &ASCharacter::PrimaryAttack);
+	PlayerInputComponent->BindAction("BlackHoleAttack", IE_Pressed, this, &ASCharacter::BlackHoleAttack);
+
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
@@ -149,6 +151,11 @@ void ASCharacter::PrimaryAttack()
 void ASCharacter::DashProjectile()
 {
 	ActionComp->StartActionByName(this, "DashProjectile");
+}
+
+void ASCharacter::BlackHoleAttack()
+{
+	ActionComp->StartActionByName(this, "BlackHoleAttack");
 }
 
 void ASCharacter::PrimaryInteract()
