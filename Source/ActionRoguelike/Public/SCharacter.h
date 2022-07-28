@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SAttributeComponent.h"
+#include "../../../Plugins/Developer/RiderLink/Source/RD/src/rd_core_cpp/src/main/types/Void.h"
 #include "GameFramework/Character.h"
 #include "SCharacter.generated.h"
 
@@ -11,6 +12,9 @@ class UCameraComponent;
 class USpringArmComponent;
 class USInteractionComponent;
 class UAnimMontage;
+class USAttributeComponent;
+class UParticleSystem;
+class USActionComponent;
 
 static TAutoConsoleVariable<bool> CVarDebugDrawAttack(TEXT("su.AttackDebugDraw"), false, TEXT("Enable Debug Lines for Attack Component."), ECVF_Cheat);
 
@@ -19,6 +23,10 @@ class ACTIONROGUELIKE_API ASCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+public:
+	// Sets default values for this character's properties
+	ASCharacter();
+	
 protected:
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
@@ -34,12 +42,6 @@ protected:
 	UAnimMontage* AttackAnimDashProjectile;
 	
 	FTimerHandle TimerHandle_PrimaryAttack;
-
-public:
-	// Sets default values for this character's properties
-	ASCharacter();
-
-protected:
 	
 	UPROPERTY(VisibleAnywhere);
 	USpringArmComponent* SpringArmComp;
@@ -52,12 +54,20 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components");
 	USAttributeComponent* AttributeComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components");
+	USActionComponent* ActionComp;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	void MoveForward(float value);
 
 	void MoveRight(float value);
+
+	void SprintStart();
+
+	void SprintStop();
 
 	void PrimaryAttack();
 	void PrimaryAttack_TimeElapsed();

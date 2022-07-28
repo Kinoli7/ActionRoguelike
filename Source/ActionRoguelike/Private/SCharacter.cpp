@@ -6,6 +6,8 @@
 #include <Camera/CameraComponent.h>
 #include "DrawDebugHelpers.h"
 #include <GameFramework/CharacterMovementComponent.h>
+
+#include "SActionComponent.h"
 #include "SInteractionComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h"
@@ -30,6 +32,8 @@ ASCharacter::ASCharacter()
 	GetCharacterMovement()->bApplyGravityWhileJumping = true;
 
 	InteractionComp = CreateDefaultSubobject<USInteractionComponent>("InteractionComp");
+
+	ActionComp = CreateDefaultSubobject<USActionComponent>("ActionComp");
 
 	bUseControllerRotationYaw = false;
 }
@@ -94,6 +98,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &ASCharacter::PrimaryInteract);
 	PlayerInputComponent->BindAction("DashProjectile", IE_Pressed, this, &ASCharacter::DashProjectile);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ASCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ASCharacter::SprintStop);
 }
 
 void ASCharacter::HealSelf(float Amount /* = 100 */)
@@ -121,6 +128,18 @@ void ASCharacter::MoveRight(float Value)
 
 	AddMovementInput(RightVector, Value);
 }
+
+
+void ASCharacter::SprintStart()
+{
+	ActionComp->StartActionByName(this, "Sprint");
+}
+
+void ASCharacter::SprintStop()
+{
+	ActionComp->StopActionByName(this, "Sprint");
+}
+
 
 void ASCharacter::PrimaryAttack()
 {
