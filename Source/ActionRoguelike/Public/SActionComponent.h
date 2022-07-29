@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "SActionEffect.h"
 #include "Components/ActorComponent.h"
 #include "SActionComponent.generated.h"
 
@@ -20,14 +21,17 @@ public:
 	FGameplayTagContainer ActiveGameplayTags;
 	
 	UFUNCTION(BlueprintCallable, Category="Actions")
-	void AddAction(TSubclassOf<USAction> ActionClass);
+	void AddAction(AActor* Instigator, TSubclassOf<USAction> ActionClass);
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Action")
 	bool StartActionByName(AActor* Instigator, FName ActionName);
 
 	UFUNCTION(BlueprintNativeEvent, Category="Action")
 	bool StopActionByName(AActor* Instigator, FName ActionName);
-	
+
+	UFUNCTION(BlueprintCallable, Category="Action")
+	void RemoveAction(USAction* ActionToRemove);
+
 	// Sets default values for this component's properties
 	USActionComponent();
 
