@@ -3,6 +3,8 @@
 
 #include "SMagicProjectile.h"
 
+#include "SAction.h"
+#include "SActionComponent.h"
 #include "SAttributeComponent.h"
 #include "SGameplayFunctionLibrary.h"
 
@@ -17,18 +19,18 @@ ASMagicProjectile::ASMagicProjectile()
 
 void ASMagicProjectile::OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	// AActor* AInstigator = GetInstigator();
-	// if (OtherActor && OtherActor != AInstigator)
-	// {
-	// 	USAttributeComponent* AttributeComp = Cast<USAttributeComponent> (OtherActor->GetComponentByClass(USAttributeComponent::StaticClass()));
-	// 	if (AttributeComp)
-	// 	{
-	// 		AttributeComp->ApplyHealthChange(GetInstigator(), -Damage);
-	//
-	// 		Explode();
-	// 	}
-	// }
+	// Other way of doing tag comparison
+	//static FGameplayTag Tag = FGameplayTag::RequestGameplayTag("Status.Parrying");
+	
+	USActionComponent* ActionComp = Cast<USActionComponent>(OtherActor->GetComponentByClass(USActionComponent::StaticClass()));
+	if (ActionComp && ActionComp->ActiveGameplayTags.HasTag(ParryTag))
+	{
+		MovementComp->Velocity = -MovementComp->Velocity;
 
+		SetInstigator(Cast<APawn>(OtherActor));
+		return;
+	}
+	
 	AActor* AInstigator = GetInstigator();
 	if ((OtherActor && OtherActor != AInstigator) && USGameplayFunctionLibrary::ApplyDirectionalDamage(AInstigator, OtherActor, Damage, SweepResult))
 	{

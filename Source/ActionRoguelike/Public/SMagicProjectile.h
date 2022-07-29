@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "SProjectile.h"
 #include "SMagicProjectile.generated.h"
 
@@ -16,6 +17,13 @@ public:
 	ASMagicProjectile();
 
 protected:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
+	float Damage;
+
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
+	FGameplayTag ParryTag;
+	
 	UFUNCTION()
 	void OnActorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
 	
@@ -25,8 +33,4 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	float Damage;
-
 };
