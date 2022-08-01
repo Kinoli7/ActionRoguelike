@@ -7,6 +7,7 @@
 #include "SAttributeComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewHealth, float, Delta);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnRageChanged, AActor*, InstigatorActor, USAttributeComponent*, OwningComp, float, NewRage, float, Delta);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ACTIONROGUELIKE_API USAttributeComponent : public UActorComponent
@@ -52,6 +53,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnRageChanged OnRageChanged;
+
 	bool IsFullHealth() const;
 	
 	float GetHealthMax() const;
@@ -62,9 +66,9 @@ public:
 	UFUNCTION()
 	float GetActualHealth();
 
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	float GetActualRage();
-
+	UFUNCTION(BlueprintCallable, Category="Attributes")
+	bool ApplyRageChange(float Delta);
+	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
 	bool UseAmountRage(float AmountRage);
 
