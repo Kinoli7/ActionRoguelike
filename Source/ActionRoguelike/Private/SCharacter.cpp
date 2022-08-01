@@ -155,7 +155,10 @@ void ASCharacter::DashProjectile()
 
 void ASCharacter::BlackHoleAttack()
 {
-	ActionComp->StartActionByName(this, "BlackHoleAttack");
+	if (AttributeComp->UseAmountRage(BlackHoleRageConsumption))
+	{
+		ActionComp->StartActionByName(this, "BlackHoleAttack");	
+	}
 }
 
 void ASCharacter::PrimaryInteract()

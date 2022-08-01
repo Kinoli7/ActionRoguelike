@@ -31,6 +31,16 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
 	float HealthMax = 1.0f;
+
+	UPROPERTY(BlueprintReadOnly, Category="Attributes")
+	float Rage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	float MaxRage;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	bool bIsRageFull;
+	
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -51,4 +61,11 @@ public:
 
 	UFUNCTION()
 	float GetActualHealth();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	float GetActualRage();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	bool UseAmountRage(float AmountRage);
+
 };

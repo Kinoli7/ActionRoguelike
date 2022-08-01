@@ -3,6 +3,8 @@
 
 #include "SAttributeComponent.h"
 
+#include <algorithm>
+
 #include "SGameModeBase.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplayer(TEXT("su.DamageMultiplier"), 1.0f, TEXT("Global Damage Modifier for Attribute Component"), ECVF_Cheat);
@@ -39,6 +41,9 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 		float DamageMultiplier = CVarDamageMultiplayer.GetValueOnGameThread();
 
 		Delta *= DamageMultiplier;
+
+		Rage += abs(Delta) + FMath::RandRange(0.0f, 10.0f);
+		Rage = std::clamp(Rage, 0.f, MaxRage);
 	}
 	
 	float OldHealth = Health;
@@ -47,6 +52,9 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 
 	float ActualDelta = Health - OldHealth;
 	OnHealthChanged.Broadcast(nullptr, this, Health, Delta);
+
+	FString DebugMsg = "RageValue: " + FString::SanitizeFloat(Rage);
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White, DebugMsg);
 
 	// Died
 	if (ActualDelta < 0.0f && Health == 0.0f)
@@ -93,9 +101,28 @@ void USAttributeComponent::BeginPlay()
 	Super::BeginPlay();
 
 	Health = HealthMax;
+
+	Rage = 0.f;
+	bIsRageFull = false;
 }
 
 float USAttributeComponent::GetActualHealth()
 {
 	return Health;
+}
+
+float USAttributeComponent::GetActualRage_Implementation()
+{
+	return Rage;
+}
+
+bool USAttributeComponent::UseAmountRage_Implementation(float AmountRage)
+{
+	if (Rage >= AmountRage)
+	{
+		Rage -= AmountRage;
+		return true;
+	}
+
+	return false;
 }

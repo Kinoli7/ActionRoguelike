@@ -42,6 +42,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components");
 	USActionComponent* ActionComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Components");
+	float BlackHoleRageConsumption;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
