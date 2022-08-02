@@ -5,6 +5,14 @@
 
 #include "SAction.h"
 
+// Sets default values for this component's properties
+USActionComponent::USActionComponent()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+
+	SetIsReplicatedByDefault(true);
+}
+
 void USActionComponent::RemoveAction(USAction* ActionToRemove)
 {
 	if (!ensure(ActionToRemove && !ActionToRemove->IsRunning()))
@@ -14,13 +22,6 @@ void USActionComponent::RemoveAction(USAction* ActionToRemove)
 	
 	Actions.Remove(ActionToRemove);
 }
-
-// Sets default values for this component's properties
-USActionComponent::USActionComponent()
-{
-	PrimaryComponentTick.bCanEverTick = true;
-}
-
 
 // Called when the game starts
 void USActionComponent::BeginPlay()
@@ -74,6 +75,12 @@ bool USActionComponent::StartActionByName_Implementation(AActor* Instigator, FNa
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				continue;
 			}
+
+			// Is Client?
+			if (!GetOwner()->HasAuthority())
+			{
+				ServerStartAction(Instigator, ActionName);	
+			}
 			
 			Action->StartAction(Instigator);
 			return true;
@@ -99,4 +106,9 @@ bool USActionComponent::StopActionByName_Implementation(AActor* Instigator, FNam
 	}
 
 	return false;
+}
+
+void USActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StartActionByName(Instigator, ActionName);
 }

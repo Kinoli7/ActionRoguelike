@@ -27,10 +27,10 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true), Category="Attributes")
+	UPROPERTY(BlueprintReadOnly, Meta = (ExposeOnSpawn = true), Replicated, Category="Attributes")
 	float Health;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category="Attributes")
 	float HealthMax = 1.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category="Attributes")
@@ -41,6 +41,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
 	bool bIsRageFull;
+
+	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' out of scharacter
+	void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float Delta);
 	
 public:
 
