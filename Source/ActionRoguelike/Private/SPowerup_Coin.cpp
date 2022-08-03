@@ -27,7 +27,7 @@ void ASPowerup_Coin::OnActorOverlap(UPrimitiveComponent* PrimitiveComponent, AAc
 	ASPlayerState* MyPlayerState = Cast<ASPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0));
 	if ( UGameplayStatics::GetPlayerPawn(GetWorld(), 0) == Actor )
 	{
-		Cast<ASPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0))->AddCredits(1);
+		Cast<ASPlayerState>(UGameplayStatics::GetPlayerState(GetWorld(),0))->AddCredits(CreditsToAdd);
 		HideAndCooldownPowerup();
 	}
 	

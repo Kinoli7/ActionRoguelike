@@ -3,6 +3,8 @@
 
 #include "SPlayerState.h"
 
+#include "SSaveGame.h"
+
 ASPlayerState::ASPlayerState()
 {
 	UE_LOG(LogTemp, Log, TEXT("SPlayerState created successfully!"));
@@ -16,21 +18,35 @@ int ASPlayerState::getNumberOfCredits_Implementation()
 void ASPlayerState::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	Credits = 0;
+void ASPlayerState::SavePlayerState_Implementation(USSaveGame* SaveObject)
+{
+	if (SaveObject)
+	{
+		SaveObject->Credits = Credits;
+	}
+}
+
+void ASPlayerState::LoadPlayerState_Implementation(USSaveGame* SaveObject)
+{
+	if (SaveObject)
+	{
+		Credits = SaveObject->Credits;
+	}
 }
 
 void ASPlayerState::AddCredits_Implementation(int Delta)
 {
 	Credits += Delta;
 	
-	OnCreditsChanged.Broadcast(Credits);
+	OnCreditsChanged.Broadcast(Credits, GetPlayerController()->PlayerState);
 }
 
 void ASPlayerState::RemoveCredits_Implementation(int Delta)
 {
 	Credits -= Delta;
 	
-	OnCreditsChanged.Broadcast(Credits);
+	OnCreditsChanged.Broadcast(Credits, GetPlayerController()->PlayerState);
 }
 

@@ -29,6 +29,9 @@ protected:
 	
 	UPROPERTY()
 	FTimerHandle TimerHandle_CoinCooldown;
+
+	UPROPERTY(EditDefaultsOnly)
+	int CreditsToAdd;
 	
 	void ResetCoinTimer();
 
