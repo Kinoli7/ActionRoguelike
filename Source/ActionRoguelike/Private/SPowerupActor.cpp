@@ -3,6 +3,8 @@
 
 #include "SPowerupActor.h"
 
+#include "Net/UnrealNetwork.h"
+
 // Sets default values
 ASPowerupActor::ASPowerupActor()
 {
@@ -25,10 +27,10 @@ void ASPowerupActor::ShowPowerup()
 	SetPowerupState(true);
 }
 
-void ASPowerupActor::HideAndCooldownPowerup()
+void ASPowerupActor::OnRep_HideAndCooldownPowerup()
 {
 	SetPowerupState(false);
-
+	
 	GetWorldTimerManager().SetTimer(TimerHandle_RespawnTimer, this, &ASPowerupActor::ShowPowerup, RespawnTime);
 }
 
@@ -38,5 +40,13 @@ void ASPowerupActor::SetPowerupState(bool bNewIsActive)
 
 	// Set visibility on root and all children
 	RootComponent->SetVisibility(bNewIsActive, true);
+
+	IsPowerupActivated = false;
 }
 
+void ASPowerupActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASPowerupActor, IsPowerupActivated);
+}

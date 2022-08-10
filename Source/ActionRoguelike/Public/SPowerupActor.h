@@ -26,10 +26,14 @@ protected:
 
 	FTimerHandle TimerHandle_RespawnTimer;
 
+	UPROPERTY(ReplicatedUsing="OnRep_HideAndCooldownPowerup")
+	bool IsPowerupActivated;
+	
 	UFUNCTION()
 	void ShowPowerup();
 
-	void HideAndCooldownPowerup();
+	UFUNCTION()
+	void OnRep_HideAndCooldownPowerup();
 
 	void SetPowerupState(bool bNewIsActive);
 

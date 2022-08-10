@@ -37,8 +37,9 @@ void ASPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 	{
 		if (AttributeComp->ApplyHealthChange(this, PotionHealthValue))
 		{
-			MyPlayerState->RemoveCredits(CreditCost); 
-			HideAndCooldownPowerup();
+			MyPlayerState->RemoveCredits(CreditCost);
+			IsPowerupActivated = true;
+			OnRep_HideAndCooldownPowerup();
 		}
 	}
 }
