@@ -7,12 +7,14 @@
 #include "EngineUtils.h"
 #include "SAttributeComponent.h"
 #include "SCharacter.h"
+#include "SGameplayInterface.h"
 #include "SPlayerState.h"
 #include "SSaveGame.h"
 #include "AI/SAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "GameFramework/GameStateBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("su.SpawnBots"), true, TEXT("Enable spawning of bots via timer."), ECVF_Cheat);
 
@@ -166,6 +168,34 @@ void ASGameModeBase::WriteSaveGame()
 			break; // single player only at this point
 		}
 	}
+
+	CurrentSaveGame->SavedActors.Empty();
+
+	// Iterate the entire world of actors
+	for (FActorIterator It(GetWorld()); It; ++It)
+	{
+		AActor* Actor = *It;
+		// Only interested in our 'gameplay actors'
+		if (!Actor->Implements<USGameplayInterface>())
+		{
+			continue;
+		}
+
+		FActorSaveData ActorData;
+		ActorData.ActorName = Actor->GetName();
+		ActorData.Transform = Actor->GetActorTransform();
+
+		// Pass the array to fill with data from Actor
+		FMemoryWriter MemoryWriter(ActorData.ByteData);
+		
+		FObjectAndNameAsStringProxyArchive Ar(MemoryWriter, true);
+		// Find only variables with UPROPERTY(SaveGame)
+		Ar.ArIsSaveGame = true;
+		// Converts Actor-s SaveGame UPROPERTIES into binary array		
+		Actor->Serialize(Ar);
+
+		CurrentSaveGame->SavedActors.Add(ActorData);
+	}
 	
 	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SlotName, 0);
 }
@@ -182,6 +212,37 @@ void ASGameModeBase::LoadSaveGame()
 		}
 
 		UE_LOG(LogTemp, Warning, TEXT("Loaded SaveGame Data."));
+
+		// Iterate the entire world of actors
+		for (FActorIterator It(GetWorld()); It; ++It)
+		{
+			AActor* Actor = *It;
+			// Only interested in our 'gameplay actors'
+			if (!Actor->Implements<USGameplayInterface>())
+			{
+				continue;
+			}
+
+			for (FActorSaveData ActorData : CurrentSaveGame->SavedActors)
+			{
+				if (ActorData.ActorName == Actor->GetName())
+				{
+					Actor->SetActorTransform(ActorData.Transform);
+
+					FMemoryReader MemReader(ActorData.ByteData);
+		
+					FObjectAndNameAsStringProxyArchive Ar(MemReader, true);
+					// Find only variables with UPROPERTY(SaveGame)
+					Ar.ArIsSaveGame = true;
+					// Converts binary array back into actor's variables	
+					Actor->Serialize(Ar);
+
+					ISGameplayInterface::Execute_OnActorLoaded(Actor); 
+					
+					break;
+				}
+			}
+		}
 	}
 	else
 	{

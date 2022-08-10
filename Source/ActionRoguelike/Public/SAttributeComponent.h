@@ -33,14 +33,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category="Attributes")
 	float HealthMax = 1.0f;
 
-	UPROPERTY(BlueprintReadOnly, Category="Attributes")
+	UPROPERTY(BlueprintReadOnly, Replicated, Category="Attributes")
 	float Rage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Replicated, Category="Attributes")
 	float MaxRage;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
-	bool bIsRageFull;
+	// UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Attributes")
+	// bool bIsRageFull;
 
 	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable once we moved the 'state' out of scharacter
 	void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float Delta);
@@ -70,9 +70,9 @@ public:
 	float GetActualHealth();
 
 	UFUNCTION(BlueprintCallable, Category="Attributes")
-	bool ApplyRageChange(float Delta);
+	bool ApplyRageChange(AActor* InstigatorActor, float Delta);
 	
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	bool UseAmountRage(float AmountRage);
+	bool UseAmountRage(AActor* InstigatorActor, float AmountRage);
 
 };

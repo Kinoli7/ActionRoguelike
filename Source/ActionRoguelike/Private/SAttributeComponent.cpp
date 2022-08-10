@@ -46,7 +46,7 @@ bool USAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Delt
 
 		Delta *= DamageMultiplier;
 
-		ApplyRageChange(Delta);
+		ApplyRageChange(InstigatorActor, Delta);
 	}
 	
 	float OldHealth = Health;
@@ -111,7 +111,6 @@ void USAttributeComponent::BeginPlay()
 	Health = HealthMax;
 
 	Rage = 0.f;
-	bIsRageFull = false;
 }
 
 float USAttributeComponent::GetActualHealth()
@@ -119,28 +118,34 @@ float USAttributeComponent::GetActualHealth()
 	return Health;
 }
 
-bool USAttributeComponent::ApplyRageChange(float Delta)
+bool USAttributeComponent::ApplyRageChange(AActor* InstigatorActor, float Delta)
 {
-	Rage += abs(Delta) + FMath::RandRange(0.0f, 10.0f);
-	Rage = std::clamp(Rage, 0.f, MaxRage);
-
-	FString DebugMsg = "RageValue: " + FString::SanitizeFloat(Rage);
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White, DebugMsg);
-
-	OnRageChanged.Broadcast(nullptr, this, Rage, Delta);
-
-	return true;
-}
-
-bool USAttributeComponent::UseAmountRage_Implementation(float AmountRage)
-{
-	if (Rage >= AmountRage)
+	if (GetOwner()->HasAuthority())
 	{
-		Rage -= AmountRage;
-		OnRageChanged.Broadcast(nullptr, this, Rage, -AmountRage);
+		Rage += abs(Delta) + FMath::RandRange(0.0f, 10.0f);
+		Rage = std::clamp(Rage, 0.f, MaxRage);
+
+		FString DebugMsg = "RageValue: " + FString::SanitizeFloat(Rage);
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White, DebugMsg);
+
+		OnRageChanged.Broadcast(InstigatorActor, this, Rage, Delta);
+
 		return true;
 	}
+	return false;
+}
 
+bool USAttributeComponent::UseAmountRage_Implementation(AActor* InstigatorActor, float AmountRage)
+{
+	if (GetOwner()->HasAuthority())
+	{
+		if (Rage >= AmountRage)
+		{
+			Rage -= AmountRage;
+			OnRageChanged.Broadcast(InstigatorActor, this, Rage, -AmountRage);
+			return true;
+		}
+	}
 	return false;
 }
 
