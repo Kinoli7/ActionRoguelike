@@ -22,12 +22,30 @@ void ASPowerupActor::Interact_Implementation(APawn* InstigatorPawn)
 	// Logic in derived classes...
 }
 
+
+void ASPowerupActor::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (HasAuthority())
+	{
+		SetPowerupState(true);
+	}
+}
+
+void ASPowerupActor::OnRep_IsActive()
+{
+	SetActorEnableCollision(bIsActive);
+	// Set visibility on root and all children
+	RootComponent->SetVisibility(bIsActive, true);
+}
+
 void ASPowerupActor::ShowPowerup()
 {
 	SetPowerupState(true);
 }
 
-void ASPowerupActor::OnRep_HideAndCooldownPowerup()
+void ASPowerupActor::HideAndCooldownPowerup()
 {
 	SetPowerupState(false);
 	
@@ -36,17 +54,13 @@ void ASPowerupActor::OnRep_HideAndCooldownPowerup()
 
 void ASPowerupActor::SetPowerupState(bool bNewIsActive)
 {
-	SetActorEnableCollision(bNewIsActive);
-
-	// Set visibility on root and all children
-	RootComponent->SetVisibility(bNewIsActive, true);
-
-	IsPowerupActivated = false;
+	bIsActive = bNewIsActive;
+	OnRep_IsActive();
 }
 
 void ASPowerupActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(ASPowerupActor, IsPowerupActivated);
+	DOREPLIFETIME(ASPowerupActor, bIsActive);
 }

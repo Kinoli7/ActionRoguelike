@@ -26,15 +26,22 @@ protected:
 
 	FTimerHandle TimerHandle_RespawnTimer;
 
-	UPROPERTY(ReplicatedUsing="OnRep_HideAndCooldownPowerup")
-	bool IsPowerupActivated;
+	UPROPERTY(ReplicatedUsing="OnRep_IsActive")
+	bool bIsActive;
+
+	UFUNCTION()
+	virtual void BeginPlay() override;
+	
+	UFUNCTION()
+	void OnRep_IsActive();
 	
 	UFUNCTION()
 	void ShowPowerup();
 
 	UFUNCTION()
-	void OnRep_HideAndCooldownPowerup();
+	void HideAndCooldownPowerup();
 
+	UFUNCTION()
 	void SetPowerupState(bool bNewIsActive);
 
 	UPROPERTY(VisibleAnywhere, Category="Components")

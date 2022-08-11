@@ -9,7 +9,7 @@
 class USSaveGame;
 class USaveGame;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnCreditsChanged, int, Credits, APlayerState*, PlayerState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChanged, ASPlayerState*, PlayerState, int, Credits, int, Delta);
 
 /**
  * 
@@ -23,10 +23,14 @@ public:
 	ASPlayerState();
 	
 protected:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing="OnRep_Credits")
 	int Credits;
 
 	virtual void BeginPlay() override;
+
+	// OnRep_ can use a parameter containing the 'old value' of the variable it is bound to. Very useful in this case to figure the 'delta'.
+	UFUNCTION()
+	void OnRep_Credits(int OldCredits);
 	
 public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
