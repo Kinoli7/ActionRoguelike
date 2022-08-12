@@ -22,6 +22,9 @@ public:
 
 	USActionEffect();
 
+	UFUNCTION(BlueprintCallable, Category="Effect")
+	float GetTimeRemaining() const;
+
 protected:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Effect")
