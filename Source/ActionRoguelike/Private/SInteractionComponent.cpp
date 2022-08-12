@@ -99,7 +99,7 @@ void USInteractionComponent::FindBestInteractable()
 		{
 			DefaultWidgetInstance->AttachedActor = FocusedActor;
 
-			if (DefaultWidgetInstance->IsInViewport())
+			if (!DefaultWidgetInstance->IsInViewport())
 			{
 				DefaultWidgetInstance->AddToViewport();
 			}

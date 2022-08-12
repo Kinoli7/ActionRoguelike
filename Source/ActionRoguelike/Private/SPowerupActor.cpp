@@ -22,6 +22,11 @@ void ASPowerupActor::Interact_Implementation(APawn* InstigatorPawn)
 	// Logic in derived classes...
 }
 
+FText ASPowerupActor::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	return FText::GetEmpty();
+}
+
 
 void ASPowerupActor::BeginPlay()
 {
