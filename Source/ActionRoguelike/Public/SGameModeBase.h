@@ -86,7 +86,7 @@ protected:
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
 
-	void OnMonsterLoaded(FPrimaryAssetId LoadedId, FVector SpawnLocation);
+	void OnMonsterLoaded(FPrimaryAssetId LoadedId , FVector SpawnLocation);
 	
 	UFUNCTION()
 	void OnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
